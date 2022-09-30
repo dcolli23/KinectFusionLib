@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.0)
 project(KinectFusionLib)
 
 # Use modern C++
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 # Setting output paths
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
@@ -21,8 +21,10 @@ ENDIF ()
 
 ## OpenCV
 # Optional: Set OpenCV_DIR if you want to use a custom version of OpenCV
-SET("OpenCV_DIR" "/opt/opencv/usr/local/share/OpenCV")
-find_package(OpenCV 3.0 REQUIRED)
+SET("OpenCV_DIR" "/home/dcolli23/code/lab/opencv_3/opencv/build")
+find_package(OpenCV 3.4 REQUIRED)
+# Dylan trying to compile with Armadillo's OpenCV version
+# find_package(OpenCV 4.2.0 REQUIRED)
 if (OpenCV_INCLUDE_DIRS)
     include_directories("${OpenCV_INCLUDE_DIRS}")
     link_directories(${OpenCV_DIR}/lib)
@@ -46,4 +48,10 @@ include_directories("${PROJECT_INCLUDE_DIR}" "${PROJECT_SOURCE_DIR}/cuda/include
 file(GLOB KinectFusion_SRCS "${PROJECT_SOURCE_DIR}/cuda/*.cu" "${PROJECT_SOURCE_DIR}/*.cpp")
 
 cuda_add_library(KinectFusion STATIC "${KinectFusion_SRCS}")
-target_link_libraries(KinectFusion "${OpenCV_LIBS}")
+target_link_libraries(KinectFusion STATIC "${OpenCV_LIBS}")
+
+# install(TARGETS KinectFusion DESTINATION "${PROJECT_BINARY_DIR}/lib")
+# install(DIRECTORY ${PROJECT_INCLUDE_DIR} DESTINATION "${PROJECT_BINARY_DIR}")
+install(TARGETS KinectFusion DESTINATION lib)
+install(DIRECTORY ${PROJECT_INCLUDE_DIR} DESTINATION .)
+install(DIRECTORY "${PROJECT_INCLUDE_DIR}/cuda/include" DESTINATION .)

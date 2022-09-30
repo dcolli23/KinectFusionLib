@@ -1,3 +1,4 @@
+#pragma once
 // CUDA kernel header with commonly used definitions, functions and data structures
 // Author: Christian Diller, git@christian-diller.de
 
